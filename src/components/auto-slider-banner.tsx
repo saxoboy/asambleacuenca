@@ -1,12 +1,11 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
-const images = [
-  "/images/intro-video-medium.gif",
+const videos = [
+  "/videos/intro-video.mp4",
 ]
 
 export function AutoSliderBanner() {
@@ -14,33 +13,27 @@ export function AutoSliderBanner() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length)
-    }, 5000) // Change image every 5 seconds
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % videos.length)
+    }, 5000) // Change video every 5 seconds
 
     return () => clearInterval(interval)
   }, [])
 
-  // const handleShopClick = () => {
-  //   const productSection = document.getElementById("product-section")
-  //   if (productSection) {
-  //     productSection.scrollIntoView({ behavior: "smooth" })
-  //   }
-  // }
-
   return (
     <div className="relative w-full h-screen overflow-hidden">
-      {images.map((src, index) => (
+      {videos.map((src, index) => (
         <div
           key={src}
           className={`absolute top-0 left-0 w-full h-full transition-opacity duration-1000 ${index === currentIndex ? "opacity-100" : "opacity-0"
             }`}
         >
-          <Image
-            src={src || "/placeholder.svg"}
-            alt={`Banner ${index + 1}`}
-            fill
-            style={{ objectFit: "cover" }}
-            priority
+          <video
+            src={src}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover"
           />
         </div>
       ))}
