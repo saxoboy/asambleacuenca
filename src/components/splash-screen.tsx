@@ -43,32 +43,27 @@ export function SplashScreen() {
   }, [])
 
   return (
-    <div
-      className={cn(
-        "fixed inset-0 z-[60] flex flex-col items-center justify-center bg-gray-900 transition-opacity duration-500",
-        isComplete ? "opacity-0 pointer-events-none" : "opacity-100",
-      )}
-    >
+    <div className={cn("fixed inset-0 z-[60] flex flex-col items-center justify-center bg-gray-900 transition-opacity duration-500", isComplete ? "opacity-0 pointer-events-none" : "opacity-100")}>
       <div className="relative w-48 h-48 mb-8">
         <Image
           src="/images/logo-asamblea.png"
-          alt="SDFM 2520"
-          fill
+          alt="Iglesia Evangélica Asamblea de Dios Ecuatoriana de Cuenca"
           className="object-contain"
+          fill
           priority
         />
       </div>
 
       {/* Matrix-style loading text */}
-      <div className="font-mono text-white mb-4 h-6">{`LOADING_SYSTEM: ${matrixText}`}</div>
+      <div className="font-body text-white mb-4 h-6">{`Cargando...: ${matrixText}`}</div>
 
       {/* Progress bar container */}
-      <div className="w-64 h-1 bg-dark-400 rounded-full overflow-hidden">
+      <div className="w-64 h-1 bg-gray-400 rounded-full overflow-hidden">
         <div className="h-full bg-white transition-all duration-100 ease-out" style={{ width: `${progress}%` }} />
       </div>
 
       {/* Progress percentage */}
-      <div className="mt-2 font-mono text-sm text-white">{`${progress}%`}</div>
+      <div className="mt-2 font-display text-sm text-white">{`${progress}%`}</div>
     </div>
   )
 }
