@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { FaFacebook, FaSquareInstagram, FaSquareXTwitter, FaYoutube, FaTiktok } from "react-icons/fa6";
+import { Logo } from "./logo";
 
 const videos = [
   "/videos/intro-video.mp4",
@@ -38,7 +39,10 @@ export function AutoSliderBanner() {
           />
         </div>
       ))}
-      <div className="absolute inset-0 bg-black/75 flex flex-col items-center justify-start pt-52">
+      <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 pointer-events-none">
+        <Logo />
+      </div>
+      <div className="absolute inset-0 bg-black/75 flex flex-col items-center justify-start pt-40">
         <div className="max-w-3xl mx-auto px-4">
           <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl text-gray-100 text-center mb-4 font-display animate-fade-in">
             Iglesia Evangélica <br />Asamblea de Dios Ecuatoriana <br /> Cuenca - Ecuador
@@ -46,8 +50,8 @@ export function AutoSliderBanner() {
         </div>
         <p className="text-xl text-gray-300 text-center my-8 font-body">Sitio en construcción...</p>
       </div>
-      <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 container mx-auto">
-        <div className="flex flex-col lg:flex-row gap-4 mb-8 px-4">
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 container mx-auto">
+        <div className="flex flex-col lg:flex-row gap-4 px-4">
           <div className="w-full lg:w-1/3 px-4">
             <h2 className="mb-4 font-display text-2xl text-white text-center font-bold">Visítanos en</h2>
             <div className="flex flex-col gap-4 items-center h-full text-white">
@@ -71,7 +75,7 @@ export function AutoSliderBanner() {
           <div className="w-full lg:w-1/3 px-4">
             <h2 className="mb-4 font-display text-2xl text-white text-center font-bold">Síguenos en</h2>
             <div className="flex gap-4 justify-center items-center lg:items-stretch">
-              <div className="flex flex-row lg:flex-col gap-4">
+              <div className="flex flex-row lg:flex-col gap-2">
                 <Link href="https://www.facebook.com/asambleacuenca" target="_blank" title="Visítanos en Facebook" className="transition-transform hover:scale-125">
                   <FaFacebook size={32} color="#FFFFFF" />
                 </Link>
