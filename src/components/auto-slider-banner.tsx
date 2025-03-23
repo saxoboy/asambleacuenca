@@ -52,7 +52,7 @@ export function AutoSliderBanner() {
       </div>
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 container mx-auto">
         <div className="flex flex-col lg:flex-row gap-4 px-4">
-          <div className="w-full lg:w-1/3 px-4">
+          <div className="w-full hidden md:block lg:w-1/3 px-4">
             <h2 className="mb-4 font-display text-2xl text-white text-center font-bold">Visítanos en</h2>
             <div className="flex flex-col gap-4 items-center h-full text-white">
               <h4 className="text-xl text-center font-body">Río Cutucu y Rumi Urco <br /> (junto a la central telefónica de Totoracocha)<br />Cuenca - Ecuador</h4>
@@ -61,9 +61,9 @@ export function AutoSliderBanner() {
             </div>
           </div>
 
-          <div className="w-full lg:w-1/3 px-4">
+          <div className="w-full hidden lg:block lg:w-1/3 px-4">
             <h2 className="mb-4 font-display text-2xl text-white text-center font-bold">Horarios de Reuniones</h2>
-            <div className="flex flex-col gap-4 items-center h-full text-white">
+            <div className="flex flex-col gap-4 items-center h-full text-white text-center">
               <p><span className="text-lg font-bold">Domingos:</span> 08h00 - 09h45 - 11h30</p>
               <p><span className="text-lg font-bold">Miércoles:</span> 19h00</p>
               <p><span className="text-lg font-bold">Viernes:</span> 19h00</p>
@@ -75,7 +75,7 @@ export function AutoSliderBanner() {
           <div className="w-full lg:w-1/3 px-4">
             <h2 className="mb-4 font-display text-2xl text-white text-center font-bold">Síguenos en</h2>
             <div className="flex gap-4 justify-center items-center lg:items-stretch">
-              <div className="flex flex-row lg:flex-col gap-2">
+              <div className="flex flex-wrap justify-center lg:flex-col gap-2 w-1/2 md:w-fit">
                 <Link href="https://www.facebook.com/asambleacuenca" target="_blank" title="Visítanos en Facebook" className="transition-transform hover:scale-125">
                   <FaFacebook size={32} color="#FFFFFF" />
                 </Link>
@@ -93,7 +93,7 @@ export function AutoSliderBanner() {
                 </Link>
               </div>
               <div className="flex justify-center items-center gap-2 border-l border-white px-4 py-2">
-                <h3 className="text-white text-2xl">@AsambleaCuenca</h3>
+                <h3 className="text-white lg:text-2xl">@AsambleaCuenca</h3>
               </div>
             </div>
           </div>
