@@ -43,7 +43,7 @@ export function SplashScreen() {
   }, [])
 
   return (
-    <div className={cn("fixed inset-0 z-[60] flex flex-col items-center justify-center bg-gray-900 transition-opacity duration-500", isComplete ? "opacity-0 pointer-events-none" : "opacity-100")}>
+    <div className={cn("fixed inset-0 z-60 flex flex-col items-center justify-center bg-gray-900 transition-opacity duration-500", isComplete ? "opacity-0 pointer-events-none" : "opacity-100")}>
       <div className="relative w-48 h-48 mb-8">
         <Image
           src="/images/logo-asamblea.png"
