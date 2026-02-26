@@ -1,17 +1,34 @@
-import HeroMain from '@/components/hero'
-import Horarios from '@/components/horarios'
-import Ministerios from '@/components/ministerios'
+import { Suspense } from "react";
+import HeroMain from "@/components/hero";
+import Transmisiones from "@/components/transmisiones";
+import Eventos from "@/components/eventos";
+import Ministerios from "@/components/ministerios";
+import HistoriaCTA from "@/components/historia-cta";
+import Noticias from "@/components/noticias";
+import Contactenos from "@/components/contactenos";
 
-const PageIndex = () => {
+function SectionSkeleton({ className = "h-64" }: { className?: string }) {
+  return <div className={`w-full animate-pulse bg-muted/20 ${className}`} />;
+}
+
+export default function PageWeb() {
   return (
     <>
       <HeroMain />
-      <div className='mx-auto py-8 bg-gray-300'>
-        <Horarios />
+      <Suspense fallback={<SectionSkeleton className="h-48" />}>
+        <Transmisiones />
+      </Suspense>
+      <Suspense fallback={<SectionSkeleton />}>
+        <Eventos />
+      </Suspense>
+      <Suspense fallback={<SectionSkeleton className="h-96" />}>
         <Ministerios />
-      </div>
+      </Suspense>
+      <HistoriaCTA />
+      <Suspense fallback={<SectionSkeleton className="h-80" />}>
+        <Noticias />
+      </Suspense>
+      <Contactenos />
     </>
-  )
+  );
 }
-
-export default PageIndex

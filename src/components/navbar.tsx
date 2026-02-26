@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { LogoMain } from "./logo";
 import { ModeToggle } from "./mode-toggle";
@@ -6,14 +7,15 @@ import { NavMenu } from "./nav-menu";
 
 const Navbar = () => {
   return (
-    <nav className="sticky top-0 z-50 bg-background border-b border-accent">
-      <div className="h-full flex items-center justify-between max-w-(--breakpoint-2xl) mx-auto px-4">
+    <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+      <div className="h-16 flex items-center justify-between max-w-(--breakpoint-2xl) mx-auto px-4">
         <LogoMain />
-        {/* Desktop Menu */}
         <NavMenu className="hidden lg:block" />
         <div className="flex items-center gap-3">
           <ModeToggle />
-          <Button className="inline-flex">Nuevo aqui?</Button>
+          <Button asChild className="hidden sm:inline-flex bg-primary hover:bg-primary/90 text-white font-semibold">
+            <Link href="/web#contactenos">Nuevo aquí?</Link>
+          </Button>
           <div className="lg:hidden">
             <NavigationSheet />
           </div>

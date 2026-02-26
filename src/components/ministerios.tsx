@@ -1,98 +1,111 @@
-import Image from 'next/image'
-import Link from 'next/link'
-import { Card } from './ui/card'
+import Image from "next/image";
+import Link from "next/link";
+import { client } from "@/sanity/client";
+import { ministeriosQuery } from "@/sanity/queries";
+import { urlFor } from "@/sanity/image";
+import { ArrowRight, Users } from "lucide-react";
 
 interface Ministerio {
-  id: number
-  title: string
-  description: string
-  image: string
-  link: string
+  _id: string;
+  nombre: string;
+  slug: { current: string };
+  liderNombre?: string;
+  imagenPortada?: { asset: { _ref: string } };
 }
-const ministeriosList: Ministerio[] = [
-  {
-    id: 1,
-    title: 'Alabanza',
-    description: 'Descripción del ministerio de alabanza',
-    image: '/images/ministerios/alabanza.jpg',
-    link: '/ministerios/jovenes'
-  },
-  {
-    id: 2,
-    title: 'Jóvenes - Linaje',
-    description: 'Descripción del ministerio de jóvenes',
-    image: '/images/ministerios/alabanza.jpg',
-    link: '/ministerios/jovenes'
-  },
-  {
-    id: 3,
-    title: 'Niños - Patrulla del Rey',
-    description: 'Descripción del ministerio de niños',
-    image: '/images/ministerios/alabanza.jpg',
-    link: '/ministerios/jovenes'
-  },
-  {
-    id: 4,
-    title: 'Damas',
-    description: 'Descripción del ministerio de damas',
-    image: '/images/ministerios/alabanza.jpg',
-    link: '/ministerios/jovenes'
-  },
-  {
-    id: 5,
-    title: 'Caballeros',
-    description: 'Descripción del ministerio de caballeros',
-    image: '/images/ministerios/alabanza.jpg',
-    link: '/ministerios/jovenes'
-  },
-  {
-    id: 6,
-    title: 'Linaje Teens - Adolecentes',
-    description: 'Descripción del ministerio de adolecentes',
-    image: '/images/ministerios/alabanza.jpg',
-    link: '/ministerios/jovenes'
-  },
-  {
-    id: 7,
-    title: 'Escuela Dominical',
-    description: 'Descripción de la escuela bíblica',
-    image: '/images/ministerios/alabanza.jpg',
-    link: '/ministerios/jovenes'
-  },
-  {
-    id: 8,
-    title: 'Diaconado',
-    description: 'Descripción del ministerio de diaconado',
-    image: '/images/ministerios/alabanza.jpg',
-    link: '/ministerios/jovenes'
-  }, 
-  {
-    id: 9,
-    title: 'Protocolo',
-    description: 'Descripción del ministerio de misiones',
-    image: '/images/ministerios/alabanza.jpg',
-    link: '/ministerios/jovenes'
-  }
-]
 
-const Ministerios = () => {
+// Mock data para cuando Sanity no tenga contenido aún
+const ministeriosMock = [
+  { slug: "alabanza", nombre: "Alabanza", liderNombre: "Líder por confirmar" },
+  { slug: "escuela-dominical", nombre: "Escuela Dominical", liderNombre: "Líder por confirmar" },
+  { slug: "damas", nombre: "Damas", liderNombre: "Líder por confirmar" },
+  { slug: "caballeros", nombre: "Caballeros", liderNombre: "Líder por confirmar" },
+  { slug: "jovenes-linaje", nombre: "Jóvenes — Linaje", liderNombre: "Líder por confirmar" },
+  { slug: "linaje-teens", nombre: "Linaje Teens", liderNombre: "Líder por confirmar" },
+  { slug: "patrulla-del-rey", nombre: "Patrulla del Rey", liderNombre: "Líder por confirmar" },
+  { slug: "congregaciones", nombre: "Congregaciones", liderNombre: "Líder por confirmar" },
+  { slug: "consejeria", nombre: "Consejería", liderNombre: "Líder por confirmar" },
+  { slug: "diaconado", nombre: "Diaconado", liderNombre: "Líder por confirmar" },
+  { slug: "protocolo", nombre: "Protocolo", liderNombre: "Líder por confirmar" },
+];
+
+async function getMinisterios(): Promise<Ministerio[]> {
+  try {
+    const data = await client.fetch(ministeriosQuery);
+    return data?.length > 0 ? data : [];
+  } catch {
+    return [];
+  }
+}
+
+export default async function Ministerios() {
+  const ministeriosSanity = await getMinisterios();
+
+  // Usa datos de Sanity si existen, si no usa el mock
+  const items =
+    ministeriosSanity.length > 0
+      ? ministeriosSanity.map((m) => ({
+          slug: m.slug.current,
+          nombre: m.nombre,
+          liderNombre: m.liderNombre,
+          imagenPortada: m.imagenPortada,
+        }))
+      : ministeriosMock;
+
   return (
-    <section className='py-8 bg-gray-50 px-4 lg:px-0'>
-      <div className='container mx-auto'>
-        <h2 className='text-4xl text-center mb-8'>Ministerios</h2>
-        <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
-          {ministeriosList.map(ministerio => (
-            <Card key={ministerio.id} className='p-0 pb-4 gap-4 max-w-lg'>
-              <Image src={ministerio.image} alt={ministerio.title} className='object-contain rounded-t-xl mx-auto' width={400} height={400} />
-              <h3 className='text-2xl text-center px-4'>{ministerio.title}</h3>
-              <p className='text-center px-4'>{ministerio.description}</p>
-              <Link href={ministerio.link} className='text-blue-600 hover:underline mx-auto'>Ver más</Link>
-            </Card>
+    <section id="ministerios" className="py-16 bg-secondary/30">
+      <div className="max-w-6xl mx-auto px-4">
+        {/* Encabezado */}
+        <div className="text-center mb-10">
+          <span className="inline-block text-xs font-semibold uppercase tracking-widest text-primary mb-2">
+            Comunidad
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold">Ministerios</h2>
+          <p className="mt-2 text-muted-foreground max-w-xl mx-auto">
+            Cada ministerio es un espacio de servicio, crecimiento y comunidad dentro de la iglesia
+          </p>
+        </div>
+
+        {/* Grid */}
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {items.map((ministerio) => (
+            <Link
+              key={ministerio.slug}
+              href={`/web/ministerios/${ministerio.slug}`}
+              className="group bg-card border border-border rounded-2xl overflow-hidden hover:shadow-lg hover:border-primary/40 transition-all duration-300"
+            >
+              {/* Imagen */}
+              <div className="relative h-44 bg-muted overflow-hidden">
+                {"imagenPortada" in ministerio && ministerio.imagenPortada ? (
+                  <Image
+                    src={urlFor(ministerio.imagenPortada).width(400).height(300).url()}
+                    alt={ministerio.nombre}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-primary/10">
+                    <Users className="w-12 h-12 text-primary/40" />
+                  </div>
+                )}
+              </div>
+
+              {/* Contenido */}
+              <div className="p-4">
+                <h3 className="font-bold text-base group-hover:text-primary transition-colors">
+                  {ministerio.nombre}
+                </h3>
+                {ministerio.liderNombre && (
+                  <p className="text-xs text-muted-foreground mt-1">{ministerio.liderNombre}</p>
+                )}
+                <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-primary">
+                  Ver ministerio
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </Link>
           ))}
         </div>
       </div>
     </section>
-  )
+  );
 }
-
-export default Ministerios

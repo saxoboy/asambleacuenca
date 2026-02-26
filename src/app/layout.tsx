@@ -1,24 +1,17 @@
 import type { Metadata } from "next";
-import {
-  Quicksand,
-  Montserrat,
-} from "next/font/google";
+import { Jost } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
-const quicksand = Quicksand({
-  variable: "--font-quicksand",
+const jost = Jost({
+  variable: "--font-jost",
   subsets: ["latin"],
-});
-
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
-  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
-  title: "Iglesia Asamblea de Dios Ecuatoriana Cuenca",
-  description: "Sitio web de la Iglesia Asamblea de Dios Ecuatoriana en Cuenca - Ecuador",
+  title: "Asamblea de Dios Cuenca",
+  description: "Un hogar para ti — Sitio web de la Asamblea de Dios Ecuatoriana en Cuenca, Ecuador",
 };
 
 export default function RootLayout({
@@ -26,11 +19,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // suppressHydrationWarning: next-themes modifica el atributo class del html tras la hidratación
   return (
     <html lang="es" suppressHydrationWarning>
-      <body
-        className={`${quicksand.variable} ${montserrat.variable} antialiased`}
-      >
+      <body className={`${jost.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
