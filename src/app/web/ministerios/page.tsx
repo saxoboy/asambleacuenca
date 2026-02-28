@@ -1,10 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { client } from "@/sanity/client";
-import { ministeriosDestacadosQuery } from "@/sanity/queries";
+import { ministeriosQuery } from "@/sanity/queries";
 import { urlFor } from "@/sanity/image";
 import { ArrowRight, Users } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 interface Ministerio {
   _id: string;
@@ -14,7 +13,6 @@ interface Ministerio {
   imagenPortada?: { asset: { _ref: string } };
 }
 
-// Mock data para cuando Sanity no tenga contenido aún
 const ministeriosMock = [
   { slug: "alabanza", nombre: "Alabanza", liderNombre: "Líder por confirmar" },
   { slug: "escuela-dominical", nombre: "Escuela Dominical", liderNombre: "Líder por confirmar" },
@@ -29,52 +27,41 @@ const ministeriosMock = [
   { slug: "protocolo", nombre: "Protocolo", liderNombre: "Líder por confirmar" },
 ];
 
-async function getMinisterios(): Promise<Ministerio[]> {
-  try {
-    const data = await client.fetch(ministeriosDestacadosQuery);
-    return data?.length > 0 ? data : [];
-  } catch {
-    return [];
-  }
-}
+export default async function MinisteriosPage() {
+  const sanityData: Ministerio[] = await client.fetch(ministeriosQuery).catch(() => []);
 
-export default async function Ministerios() {
-  const ministeriosSanity = await getMinisterios();
-
-  // Usa datos de Sanity si existen, si no usa el mock
   const items =
-    ministeriosSanity.length > 0
-      ? ministeriosSanity.map((m) => ({
+    sanityData.length > 0
+      ? sanityData.map((m) => ({
           slug: m.slug.current,
           nombre: m.nombre,
           liderNombre: m.liderNombre,
           imagenPortada: m.imagenPortada,
         }))
-      : ministeriosMock.slice(0, 3);
+      : ministeriosMock;
 
   return (
-    <section id="ministerios" className="py-16 bg-secondary/30">
+    <div className="min-h-screen py-16">
       <div className="max-w-6xl mx-auto px-4">
         {/* Encabezado */}
-        <div className="text-center mb-10">
+        <div className="text-center mb-12">
           <span className="inline-block text-xs font-semibold uppercase tracking-widest text-primary mb-2">
             Comunidad
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold">Ministerios</h2>
+          <h1 className="text-3xl md:text-4xl font-bold">Ministerios</h1>
           <p className="mt-2 text-muted-foreground max-w-xl mx-auto">
             Cada ministerio es un espacio de servicio, crecimiento y comunidad dentro de la iglesia
           </p>
         </div>
 
-        {/* Grid — 3 cards */}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+        {/* Grid */}
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {items.map((ministerio) => (
             <Link
               key={ministerio.slug}
               href={`/web/ministerios/${ministerio.slug}`}
               className="group bg-card border border-border rounded-2xl overflow-hidden hover:shadow-lg hover:border-primary/40 transition-all duration-300"
             >
-              {/* Imagen */}
               <div className="relative h-44 bg-muted overflow-hidden">
                 {"imagenPortada" in ministerio && ministerio.imagenPortada ? (
                   <Image
@@ -89,12 +76,10 @@ export default async function Ministerios() {
                   </div>
                 )}
               </div>
-
-              {/* Contenido */}
               <div className="p-4">
-                <h3 className="font-bold text-base group-hover:text-primary transition-colors">
+                <h2 className="font-bold text-base group-hover:text-primary transition-colors">
                   {ministerio.nombre}
-                </h3>
+                </h2>
                 {ministerio.liderNombre && (
                   <p className="text-xs text-muted-foreground mt-1">{ministerio.liderNombre}</p>
                 )}
@@ -106,17 +91,7 @@ export default async function Ministerios() {
             </Link>
           ))}
         </div>
-
-        {/* CTA */}
-        <div className="mt-10 text-center">
-          <Button asChild variant="outline" size="lg" className="gap-2">
-            <Link href="/web/ministerios">
-              Ver todos los ministerios
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </Button>
-        </div>
       </div>
-    </section>
+    </div>
   );
 }

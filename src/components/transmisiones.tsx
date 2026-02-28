@@ -21,8 +21,18 @@ async function getTransmision(): Promise<Transmision | null> {
   }
 }
 
+// EN VIVO si activa=true Y fecha es de hoy (en zona horaria de Ecuador, UTC-5)
+function estaEnVivo(transmision: Transmision): boolean {
+  if (!transmision.activa) return false;
+  const ahoraEC = new Date(Date.now() - 5 * 60 * 60 * 1000); // UTC-5
+  const hoyEC = ahoraEC.toISOString().split("T")[0];
+  const fechaDia = new Date(transmision.fecha).toISOString().split("T")[0];
+  return fechaDia === hoyEC;
+}
+
 export default async function Transmisiones() {
   const transmision = await getTransmision();
+  const enVivo = transmision ? estaEnVivo(transmision) : false;
 
   return (
     <section id="transmisiones" className="py-16 bg-secondary/30">
@@ -42,7 +52,7 @@ export default async function Transmisiones() {
           <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-lg">
             {/* Badge EN VIVO o ÚLTIMA TRANSMISIÓN */}
             <div className="px-6 pt-5 flex items-center gap-3">
-              {transmision.activa ? (
+              {enVivo ? (
                 <span className="inline-flex items-center gap-1.5 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full">
                   <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse-live" />
                   EN VIVO
@@ -84,7 +94,7 @@ export default async function Transmisiones() {
                   ) : (
                     <FaFacebook className="text-lg" />
                   )}
-                  {transmision.activa ? "Ver en Vivo" : "Ver Grabación"}
+                  {enVivo ? "Ver en Vivo" : "Ver Grabación"}
                 </Link>
               </Button>
             </div>

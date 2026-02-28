@@ -14,6 +14,7 @@ const HeroMain = () => {
         playsInline
         className="absolute inset-0 w-full h-full object-cover"
         preload="auto"
+        aria-hidden="true"
       />
 
       {/* Overlay degradado azul marino */}
@@ -59,7 +60,7 @@ const HeroMain = () => {
       </div>
 
       {/* Flecha de scroll */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce z-10">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce z-10" aria-hidden="true">
         <svg className="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>

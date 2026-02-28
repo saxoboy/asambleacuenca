@@ -45,7 +45,7 @@ export default async function MinisterioPage({ params }: PageProps) {
           />
         )}
         <div className="absolute inset-0 bg-linear-to-t from-brand-navy/90 to-transparent" />
-        <div className="relative z-10 h-full flex flex-col justify-end px-6 pb-8 max-w-4xl mx-auto">
+        <div className="relative z-10 h-full flex flex-col justify-end px-6 pb-8 max-w-5xl mx-auto">
           <Button asChild variant="ghost" size="sm" className="w-fit text-white/70 hover:text-white mb-4 -ml-2">
             <Link href="/web#ministerios">
               <ChevronLeft className="w-4 h-4 mr-1" />
@@ -56,7 +56,7 @@ export default async function MinisterioPage({ params }: PageProps) {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-10">
+      <div className="max-w-5xl mx-auto px-4 py-10">
         <div className="grid md:grid-cols-3 gap-8">
           {/* Columna principal */}
           <div className="md:col-span-2 space-y-8">

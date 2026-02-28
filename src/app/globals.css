@@ -112,6 +112,7 @@
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-display;
+    text-wrap: balance;
   }
 }
 
@@ -144,9 +145,26 @@
 .delay-400 { animation-delay: 400ms; }
 .delay-500 { animation-delay: 500ms; }
 
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-slide-up,
+  .animate-slide-down {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .animate-pulse-live {
+    animation: none;
+    opacity: 1;
+  }
+  .animate-bounce {
+    animation: none;
+  }
+}
+
 /* ─── Link con subrayado animado ─────────────────────── */
 .link-5 {
-  transition: 0.4s;
+  transition: color 0.4s;
   text-decoration: none;
   position: relative;
 }
@@ -158,7 +176,16 @@
   bottom: 0;
   left: 50%;
   background-color: #006096;
-  transition: all 0.4s;
+  transition: width 0.4s, left 0.4s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link-5 {
+    transition: none;
+  }
+  .link-5::before {
+    transition: none;
+  }
 }
 .link-5:hover::before {
   width: 100%;

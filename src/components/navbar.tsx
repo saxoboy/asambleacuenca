@@ -14,7 +14,7 @@ const Navbar = () => {
         <div className="flex items-center gap-3">
           <ModeToggle />
           <Button asChild className="hidden sm:inline-flex bg-primary hover:bg-primary/90 text-white font-semibold">
-            <Link href="/web#contactenos">Nuevo aquí?</Link>
+            <Link href="/web#contactenos">¿Nuevo aquí?</Link>
           </Button>
           <div className="lg:hidden">
             <NavigationSheet />

@@ -1,16 +1,39 @@
 import { client } from "@/sanity/client";
 import { noticiaBySlugQuery, noticiasQuery } from "@/sanity/queries";
 import { urlFor } from "@/sanity/image";
-import { PortableText } from "next-sanity";
+import { PortableText, PortableTextComponents } from "next-sanity";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, CalendarDays } from "lucide-react";
+import { GaleriaLightbox } from "@/components/galeria-lightbox";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
+
+const portableTextComponents: PortableTextComponents = {
+  types: {
+    image: ({ value }) => (
+      <figure className="my-6">
+        <div className="relative w-full rounded-xl overflow-hidden bg-muted" style={{ aspectRatio: "16/9" }}>
+          <Image
+            src={urlFor(value).width(900).height(506).url()}
+            alt={value.caption || ""}
+            fill
+            className="object-cover"
+          />
+        </div>
+        {value.caption && (
+          <figcaption className="text-xs text-muted-foreground text-center mt-2 italic">
+            {value.caption}
+          </figcaption>
+        )}
+      </figure>
+    ),
+  },
+};
 
 export const dynamicParams = true;
 
@@ -74,31 +97,25 @@ export default async function NoticiaPage({ params }: PageProps) {
         </div>
       </div>
 
-      <div className="max-w-3xl mx-auto px-4 py-10">
+      <div className="max-w-5xl mx-auto px-4 py-10">
         {/* Contenido rich text */}
         {noticia.descripcion && (
           <div className="prose prose-neutral dark:prose-invert max-w-none text-base leading-relaxed">
-            <PortableText value={noticia.descripcion} />
+            <PortableText value={noticia.descripcion} components={portableTextComponents} />
           </div>
         )}
 
         {/* Galería */}
         {noticia.galeria?.length > 0 && (
-          <div className="mt-12">
-            <h2 className="text-xl font-bold mb-5">Galería de Fotos</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {noticia.galeria.map((foto: { asset: { _ref: string } }, i: number) => (
-                <div key={i} className="relative aspect-square rounded-xl overflow-hidden bg-muted">
-                  <Image
-                    src={urlFor(foto).width(400).height(400).url()}
-                    alt={`Foto ${i + 1}`}
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
+          <GaleriaLightbox
+            fotos={noticia.galeria
+              .filter((foto: any) => foto?.asset?._ref)
+              .map((foto: any, i: number) => ({
+                thumbUrl: urlFor(foto).width(500).height(500).url(),
+                fullUrl: urlFor(foto).width(1600).url(),
+                alt: `Foto ${i + 1}`,
+              }))}
+          />
         )}
 
         {/* Volver */}

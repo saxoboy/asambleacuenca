@@ -46,7 +46,7 @@ export default async function Noticias() {
           {hasMore && (
             <Link
               href="/web/noticias"
-              className="hidden sm:flex items-center gap-1 text-sm font-semibold text-primary hover:gap-2 transition-all"
+              className="hidden sm:flex items-center gap-1 text-sm font-semibold text-primary hover:gap-2 transition-[gap]"
             >
               Ver todas <ArrowRight className="w-4 h-4" />
             </Link>

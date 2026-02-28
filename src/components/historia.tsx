@@ -56,7 +56,7 @@ const portableTextComponents: any = {
                   src={urlFor(img).width(700).height(448).url()}
                   alt={img.caption || "Foto histórica"}
                   fill
-                  className="object-cover sepia-[0.2] hover:sepia-0 transition-all duration-500"
+                  className="object-cover sepia-[0.2] hover:sepia-0 transition-[filter] duration-500"
                 />
               </div>
               {img.caption && (

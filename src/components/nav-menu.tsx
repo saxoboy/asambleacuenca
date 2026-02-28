@@ -11,7 +11,7 @@ import {
 
 const mainMenuItems = [
   { href: "/web/historia", label: "La Iglesia" },
-  { href: "/web#ministerios", label: "Ministerios" },
+  { href: "/web/ministerios", label: "Ministerios" },
   { href: "/web#eventos", label: "Eventos" },
   { href: "/web/noticias", label: "Noticias" },
   { href: "/web#contactenos", label: "Contacto" },

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Jost } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
@@ -12,6 +12,13 @@ const jost = Jost({
 export const metadata: Metadata = {
   title: "Asamblea de Dios Cuenca",
   description: "Un hogar para ti — Sitio web de la Asamblea de Dios Ecuatoriana en Cuenca, Ecuador",
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#2E4356" },
+  ],
 };
 
 export default function RootLayout({

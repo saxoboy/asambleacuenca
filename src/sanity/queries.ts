@@ -24,6 +24,14 @@ export const ministeriosQuery = groq`
   }
 `;
 
+// Primeros 3 ministerios para el home
+export const ministeriosDestacadosQuery = groq`
+  *[_type == "ministerio"] | order(orden asc) [0...3] {
+    _id, nombre, slug, liderNombre,
+    imagenPortada
+  }
+`;
+
 // Detalle de un ministerio por slug
 export const ministerioBySlugQuery = groq`
   *[_type == "ministerio" && slug.current == $slug][0] {
@@ -57,7 +65,7 @@ export const noticiaBySlugQuery = groq`
     imagenPortada,
     categoria->{ nombre, color },
     descripcion,
-    galeria
+    "galeria": galeria[]{ _key, asset, hotspot, crop }
   }
 `;
 

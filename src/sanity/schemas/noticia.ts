@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { GaleriaInput } from "../components/galeria-input";
 
 export const noticia = defineType({
   name: "noticia",
@@ -62,6 +63,8 @@ export const noticia = defineType({
       title: "Galería de Fotos",
       type: "array",
       of: [{ type: "image", options: { hotspot: true } }],
+      options: { layout: "grid" },
+      components: { input: GaleriaInput },
     }),
   ],
   orderings: [
