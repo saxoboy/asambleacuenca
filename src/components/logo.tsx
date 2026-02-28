@@ -15,14 +15,24 @@ export const Logo = () => (
 );
 
 export const LogoMain = () => (
-  <div className="relative w-26 py-2">
+  <div className="relative w-64 py-2">
     <Link href="/web" title="Ir a la página de inicio">
+      {/* Modo claro */}
       <Image
-        src="/images/logo-asamblea-26.png"
+        src="/images/logo-asamblea-cuenca.png"
         alt="Asamblea de Dios Cuenca"
-        width={120}
-        height={120}
-        className="object-contain w-auto h-12"
+        width={240}
+        height={240}
+        className="object-contain w-auto h-12 dark:hidden"
+        priority
+      />
+      {/* Modo oscuro */}
+      <Image
+        src="/images/logo-asamblea-cuenca-white.png"
+        alt="Asamblea de Dios Cuenca"
+        width={240}
+        height={240}
+        className="object-contain w-auto h-12 hidden dark:block"
         priority
       />
     </Link>

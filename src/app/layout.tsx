@@ -12,6 +12,9 @@ const jost = Jost({
 export const metadata: Metadata = {
   title: "Asamblea de Dios Cuenca",
   description: "Un hogar para ti — Sitio web de la Asamblea de Dios Ecuatoriana en Cuenca, Ecuador",
+  appleWebApp: {
+    title: "Asamblea Cuenca",
+  },
 };
 
 export const viewport: Viewport = {
