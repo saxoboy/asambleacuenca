@@ -3,7 +3,21 @@ import { groq } from "next-sanity";
 // Transmisión activa o la más reciente
 export const transmisionActivaQuery = groq`
   *[_type == "transmision"] | order(activa desc, fecha desc)[0] {
-    _id, titulo, url, plataforma, activa, fecha
+    _id, titulo, url, plataforma, activa, fecha, _updatedAt
+  }
+`;
+
+// 3 más recientes para el home (estado no en vivo)
+export const transmisionesRecentesQuery = groq`
+  *[_type == "transmision"] | order(fecha desc) [0...3] {
+    _id, titulo, url, plataforma, activa, fecha, _updatedAt
+  }
+`;
+
+// Últimas 12 transmisiones para la página /web/transmisiones
+export const transmisionesQuery = groq`
+  *[_type == "transmision"] | order(fecha desc) [0...12] {
+    _id, titulo, url, plataforma, activa, fecha, _updatedAt
   }
 `;
 

@@ -1,8 +1,25 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { client } from "@/sanity/client";
+import { transmisionActivaQuery } from "@/sanity/queries";
 
-const HeroMain = () => {
+const EN_VIVO_DURACION_MS = 105 * 60 * 1000; // 1h 45min
+
+async function getEnVivo(): Promise<boolean> {
+  try {
+    const t = await client.fetch(transmisionActivaQuery);
+    if (!t?.activa) return false;
+    const transcurrido = Date.now() - new Date(t._updatedAt).getTime();
+    return transcurrido < EN_VIVO_DURACION_MS;
+  } catch {
+    return false;
+  }
+}
+
+const HeroMain = async () => {
+  const enVivo = await getEnVivo();
+
   return (
     <section className="relative w-full h-[calc(100vh-64px)] overflow-hidden">
       {/* Video de fondo */}
@@ -23,13 +40,13 @@ const HeroMain = () => {
       {/* Contenido centrado */}
       <div className="relative z-10 h-full flex flex-col items-center justify-center px-4 text-center">
         {/* Logo */}
-        <div className="mb-6 animate-fade-in opacity-0" style={{ animationFillMode: "forwards" }}>
+        <div className="mb-6 animate-fade-in opacity-0 w-96" style={{ animationFillMode: "forwards" }}>
           <Image
-            src="/images/logo-asamblea-26.png"
+            src="/images/logo-asamblea-cuenca-white.png"
             alt="Asamblea de Dios Cuenca"
-            width={120}
-            height={120}
-            className="object-contain w-24 h-24 md:w-32 md:h-32 drop-shadow-2xl"
+            width={350}
+            height={350}
+            className="object-contain w-auto"
             priority
           />
         </div>
@@ -37,8 +54,7 @@ const HeroMain = () => {
         {/* Título principal */}
         <h1 className="animate-slide-up opacity-0 delay-200 text-white font-bold tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-6xl max-w-4xl leading-tight drop-shadow-lg"
           style={{ animationFillMode: "forwards" }}>
-          Asamblea de Dios <br className="hidden sm:block" />
-          <span className="text-brand-blue">Ecuatoriana</span> de Cuenca
+          Iglesia Evangélica <br className="hidden sm:block" /><span className="text-brand-blue text-shadow-2xs">Asamblea de Dios Ecuatoriana</span><br className="hidden sm:block" /> de Cuenca
         </h1>
 
         {/* Slogan */}
@@ -50,12 +66,20 @@ const HeroMain = () => {
         {/* Botones de acción */}
         <div className="animate-slide-up opacity-0 delay-500 mt-8 flex flex-col sm:flex-row gap-4"
           style={{ animationFillMode: "forwards" }}>
-          <Button asChild size="lg" className="bg-brand-blue hover:bg-brand-blue/90 text-white font-semibold px-8">
+          <Button asChild size="lg" className="hover:bg-brand-navy">
             <Link href="/web#contactenos">Visítanos</Link>
           </Button>
-          <Button asChild size="lg" variant="outline" className="border-white/50 text-white hover:bg-white/10 hover:text-white font-semibold px-8">
-            <Link href="/web#transmisiones">Ver en Vivo</Link>
-          </Button>
+          {enVivo && (
+            <Button asChild size="lg" variant="destructive" className="relative">
+              <Link href="/web#transmisiones">
+                <span className="absolute -top-1 -right-1 flex h-3 w-3" aria-hidden="true">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-60" />
+                  <span className="relative inline-flex h-3 w-3 rounded-full bg-red-700" />
+                </span>
+                En vivo ahora!
+              </Link>
+            </Button>
+          )}
         </div>
       </div>
 
