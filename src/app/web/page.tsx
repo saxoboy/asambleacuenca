@@ -1,3 +1,6 @@
+// Re-renderizar cada 60 segundos para que el badge EN VIVO expire correctamente
+export const revalidate = 60;
+
 import { Suspense } from "react";
 import HeroMain from "@/components/hero";
 import Transmisiones from "@/components/transmisiones";

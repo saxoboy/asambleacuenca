@@ -2,6 +2,7 @@ import { client } from "@/sanity/client";
 import { transmisionesQuery } from "@/sanity/queries";
 import { FaYoutube, FaFacebook } from "react-icons/fa6";
 import Link from "next/link";
+import { EN_VIVO_DURACION_MS } from "@/lib/constants";
 
 interface Transmision {
   _id: string;
@@ -21,11 +22,9 @@ async function getTransmisiones(): Promise<Transmision[]> {
   }
 }
 
-const EN_VIVO_MS = 105 * 60 * 1000; // 1h 45min
-
 function estaEnVivo(t: Transmision): boolean {
   if (!t.activa) return false;
-  return Date.now() - new Date(t._updatedAt).getTime() < EN_VIVO_MS;
+  return Date.now() - new Date(t._updatedAt).getTime() < EN_VIVO_DURACION_MS;
 }
 
 function getYoutubeThumbnail(url: string): string | null {

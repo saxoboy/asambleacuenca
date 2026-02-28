@@ -4,6 +4,7 @@ import { FaYoutube, FaFacebook } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { EN_VIVO_DURACION_MS } from "@/lib/constants";
 
 interface Transmision {
   _id: string;
@@ -14,8 +15,6 @@ interface Transmision {
   fecha: string;
   _updatedAt: string;
 }
-
-const EN_VIVO_DURACION_MS = 105 * 60 * 1000; // 1h 45min
 
 function estaEnVivo(transmision: Transmision): boolean {
   if (!transmision.activa) return false;
@@ -57,16 +56,26 @@ export default async function Transmisiones() {
 
   const enVivo = transmision ? estaEnVivo(transmision) : false;
 
-  // ─── URL de embed ─────────────────────────────────────
-  let embedUrl: string | null = null;
-  if (enVivo && transmision) {
-    if (transmision.plataforma === "youtube") {
-      const id = getYoutubeVideoId(transmision.url);
-      if (id) embedUrl = `https://www.youtube.com/embed/${id}?autoplay=1`;
-    } else {
-      const fbAppId = process.env.NEXT_PUBLIC_FACEBOOK_APP_ID ?? "";
-      embedUrl = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(transmision.url)}&show_text=false&appId=${fbAppId}`;
-    }
+  // ─── DEBUG ────────────────────────────────────────────
+  if (transmision) {
+    const transcurrido = Date.now() - new Date(transmision._updatedAt).getTime();
+    console.log("[DEBUG transmisiones]", {
+      _updatedAt: transmision._updatedAt,
+      updatedAtLocal: new Date(transmision._updatedAt).toLocaleString("es-EC"),
+      ahora: new Date().toLocaleString("es-EC"),
+      transcurridoMin: Math.round(transcurrido / 60000),
+      limiteMin: Math.round(EN_VIVO_DURACION_MS / 60000),
+      activa: transmision.activa,
+      enVivo,
+    });
+  }
+  // ─────────────────────────────────────────────────────
+
+  // ─── URL de embed solo para YouTube ───────────────────
+  let youtubeEmbedUrl: string | null = null;
+  if (enVivo && transmision?.plataforma === "youtube") {
+    const id = getYoutubeVideoId(transmision.url);
+    if (id) youtubeEmbedUrl = `https://www.youtube.com/embed/${id}?autoplay=1`;
   }
 
   return (
@@ -83,29 +92,24 @@ export default async function Transmisiones() {
           </p>
         </div>
 
-        {enVivo && transmision && embedUrl ? (
-          /* ─── ESTADO EN VIVO: iframe ─── */
+        {enVivo && transmision && youtubeEmbedUrl ? (
+          /* ─── EN VIVO YouTube: iframe ─── */
           <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-lg">
-            {/* Badge + info */}
             <div className="px-6 pt-5 flex items-center gap-3">
               <span className="inline-flex items-center gap-1.5 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full">
                 <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse-live" />
                 EN VIVO
               </span>
-              {transmision.plataforma === "youtube" ? (
-                <FaYoutube className="text-red-600 text-2xl" />
-              ) : (
-                <FaFacebook className="text-blue-600 text-2xl" />
-              )}
+              <FaYoutube className="text-red-600 text-2xl" />
             </div>
             <div className="px-6 py-3">
-              <h3 className="text-lg font-semibold">{transmision.titulo}</h3>
+              <h3 className="text-2xl font-semibold text-center">{transmision.titulo}</h3>
             </div>
 
             {/* iframe responsive 16:9 */}
             <div className="relative w-full" style={{ aspectRatio: "16/9" }}>
               <iframe
-                src={embedUrl}
+                src={youtubeEmbedUrl}
                 className="absolute inset-0 w-full h-full"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
@@ -113,16 +117,41 @@ export default async function Transmisiones() {
               />
             </div>
 
-            {/* Botón externo como respaldo */}
             <div className="px-6 py-4 text-center">
               <Button asChild variant="outline" size="sm" className="gap-2">
                 <Link href={transmision.url} target="_blank" rel="noopener noreferrer">
-                  {transmision.plataforma === "youtube" ? (
-                    <FaYoutube className="text-red-600" />
-                  ) : (
-                    <FaFacebook className="text-blue-600" />
-                  )}
-                  Abrir en {transmision.plataforma === "youtube" ? "YouTube" : "Facebook"}
+                  <FaYoutube className="text-red-600" />
+                  Abrir en YouTube
+                </Link>
+              </Button>
+            </div>
+          </div>
+        ) : enVivo && transmision?.plataforma === "facebook" ? (
+          /* ─── EN VIVO Facebook: card con botón ─── */
+          <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-lg">
+            <div className="px-6 pt-5 flex items-center gap-3">
+              <span className="inline-flex items-center gap-1.5 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse-live" />
+                EN VIVO
+              </span>
+              <FaFacebook className="text-blue-600 text-2xl" />
+            </div>
+            <div className="px-6 py-3">
+              <h3 className="text-2xl font-semibold text-center">{transmision.titulo}</h3>
+            </div>
+
+            {/* CTA Facebook */}
+            <div className="px-6 pb-8 pt-4 flex flex-col items-center gap-4 text-center">
+              <div className="w-16 h-16 rounded-full bg-blue-600/10 flex items-center justify-center">
+                <FaFacebook className="text-blue-600 text-3xl" />
+              </div>
+              <p className="text-muted-foreground text-sm max-w-xs">
+                La transmisión está activa en Facebook. Haz clic para unirte al culto en vivo.
+              </p>
+              <Button asChild size="lg" className="gap-2 bg-blue-600 hover:bg-blue-700 text-white">
+                <Link href={transmision.url} target="_blank" rel="noopener noreferrer">
+                  <FaFacebook />
+                  Ver transmisión en Facebook
                 </Link>
               </Button>
             </div>
