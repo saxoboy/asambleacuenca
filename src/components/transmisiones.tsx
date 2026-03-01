@@ -56,21 +56,6 @@ export default async function Transmisiones() {
 
   const enVivo = transmision ? estaEnVivo(transmision) : false;
 
-  // ─── DEBUG ────────────────────────────────────────────
-  if (transmision) {
-    const transcurrido = Date.now() - new Date(transmision._updatedAt).getTime();
-    console.log("[DEBUG transmisiones]", {
-      _updatedAt: transmision._updatedAt,
-      updatedAtLocal: new Date(transmision._updatedAt).toLocaleString("es-EC"),
-      ahora: new Date().toLocaleString("es-EC"),
-      transcurridoMin: Math.round(transcurrido / 60000),
-      limiteMin: Math.round(EN_VIVO_DURACION_MS / 60000),
-      activa: transmision.activa,
-      enVivo,
-    });
-  }
-  // ─────────────────────────────────────────────────────
-
   // ─── URL de embed solo para YouTube ───────────────────
   let youtubeEmbedUrl: string | null = null;
   if (enVivo && transmision?.plataforma === "youtube") {
