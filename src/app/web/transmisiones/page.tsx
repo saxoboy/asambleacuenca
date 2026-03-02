@@ -1,3 +1,6 @@
+// Re-validar cada hora para mostrar transmisiones nuevas sin re-deployar
+export const revalidate = 3600;
+
 import { client } from "@/sanity/client";
 import { transmisionesQuery } from "@/sanity/queries";
 import { FaYoutube, FaFacebook } from "react-icons/fa6";
