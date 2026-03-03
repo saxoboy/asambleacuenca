@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Jost } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
@@ -29,7 +30,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // suppressHydrationWarning: next-themes modifica el atributo class del html tras la hidratación
   return (
     <html lang="es" suppressHydrationWarning>
       <body className={`${jost.variable} antialiased`}>
@@ -41,6 +41,7 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
