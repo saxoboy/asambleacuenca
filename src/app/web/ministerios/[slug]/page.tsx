@@ -1,3 +1,5 @@
+export const revalidate = 3600;
+
 import { client } from "@/sanity/client";
 import { ministerioBySlugQuery, ministeriosQuery } from "@/sanity/queries";
 import { urlFor } from "@/sanity/image";
@@ -7,6 +9,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Clock, ChevronLeft, Users } from "lucide-react";
+import GaleriaMinisterio from "@/components/galeria-ministerio";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -28,9 +31,16 @@ export async function generateStaticParams() {
 
 export default async function MinisterioPage({ params }: PageProps) {
   const { slug } = await params;
-  const ministerio = await client.fetch(ministerioBySlugQuery, { slug });
+  const [ministerio, todosLosMinisterios] = await Promise.all([
+    client.fetch(ministerioBySlugQuery, { slug }),
+    client.fetch(ministeriosQuery),
+  ]);
 
   if (!ministerio) notFound();
+
+  const otrosMinisterios = todosLosMinisterios.filter(
+    (m: { slug: { current: string } }) => m.slug.current !== slug
+  );
 
   return (
     <div className="min-h-screen">
@@ -74,18 +84,12 @@ export default async function MinisterioPage({ params }: PageProps) {
             {ministerio.fotos?.length > 0 && (
               <div>
                 <h2 className="text-xl font-bold mb-4">Galería</h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  {ministerio.fotos.map((foto: { asset: { _ref: string } }, i: number) => (
-                    <div key={i} className="relative aspect-square rounded-xl overflow-hidden bg-muted">
-                      <Image
-                        src={urlFor(foto).width(400).height(400).url()}
-                        alt={`${ministerio.nombre} foto ${i + 1}`}
-                        fill
-                        className="object-cover hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                  ))}
-                </div>
+                <GaleriaMinisterio
+                  fotos={ministerio.fotos.map((foto: { asset: { _ref: string } }, i: number) => ({
+                    url: urlFor(foto).width(1200).height(800).url(),
+                    alt: `${ministerio.nombre} foto ${i + 1}`,
+                  }))}
+                />
               </div>
             )}
 
@@ -147,6 +151,28 @@ export default async function MinisterioPage({ params }: PageProps) {
                 <Link href="/web#contactenos">Contáctanos</Link>
               </Button>
             </div>
+
+            {/* Otros ministerios */}
+            {otrosMinisterios.length > 0 && (
+              <div className="bg-card border border-border rounded-2xl p-5">
+                <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3">
+                  Otros ministerios
+                </h3>
+                <ul className="space-y-1">
+                  {otrosMinisterios.map((m: { _id: string; nombre: string; slug: { current: string } }) => (
+                    <li key={m._id}>
+                      <Link
+                        href={`/web/ministerios/${m.slug.current}`}
+                        className="flex items-center gap-2 text-sm py-1.5 px-2 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors"
+                      >
+                        <ChevronLeft className="w-3.5 h-3.5 rotate-180 shrink-0 text-muted-foreground" />
+                        {m.nombre}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>

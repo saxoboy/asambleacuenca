@@ -1,3 +1,5 @@
+export const revalidate = 3600;
+
 import { client } from "@/sanity/client";
 import { noticiaBySlugQuery, noticiasQuery } from "@/sanity/queries";
 import { urlFor } from "@/sanity/image";
