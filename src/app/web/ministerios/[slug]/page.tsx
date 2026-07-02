@@ -46,7 +46,7 @@ export default async function MinisterioPage({ params }: PageProps) {
     <div className="min-h-screen">
       {/* Hero del ministerio */}
       <div className="relative h-64 md:h-80 bg-brand-navy overflow-hidden">
-        {ministerio.imagenPortada && (
+        {ministerio.imagenPortada?.asset && (
           <Image
             src={urlFor(ministerio.imagenPortada).width(1200).height(400).url()}
             alt={ministerio.nombre}
@@ -81,14 +81,16 @@ export default async function MinisterioPage({ params }: PageProps) {
             )}
 
             {/* Galería */}
-            {ministerio.fotos?.length > 0 && (
+            {ministerio.fotos?.some((f: { asset?: { _ref: string } }) => f?.asset) && (
               <div>
                 <h2 className="text-xl font-bold mb-4">Galería</h2>
                 <GaleriaMinisterio
-                  fotos={ministerio.fotos.map((foto: { asset: { _ref: string } }, i: number) => ({
-                    url: urlFor(foto).width(1200).height(800).url(),
-                    alt: `${ministerio.nombre} foto ${i + 1}`,
-                  }))}
+                  fotos={ministerio.fotos
+                    .filter((foto: { asset?: { _ref: string } }) => foto?.asset)
+                    .map((foto: { asset: { _ref: string } }, i: number) => ({
+                      url: urlFor(foto).width(1200).height(800).url(),
+                      alt: `${ministerio.nombre} foto ${i + 1}`,
+                    }))}
                 />
               </div>
             )}
@@ -111,7 +113,7 @@ export default async function MinisterioPage({ params }: PageProps) {
               <div className="bg-card border border-border rounded-2xl p-5">
                 <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3">Liderado por</h3>
                 <div className="flex items-center gap-3">
-                  {ministerio.liderFoto ? (
+                  {ministerio.liderFoto?.asset ? (
                     <div className="relative w-14 h-14 rounded-full overflow-hidden shrink-0 ring-2 ring-primary/20">
                       <Image
                         src={urlFor(ministerio.liderFoto).width(100).height(100).url()}
