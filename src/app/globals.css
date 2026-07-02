@@ -11,6 +11,8 @@
   --font-body: var(--font-jost);
   --color-brand-blue: #006096;
   --color-brand-navy: #2E4356;
+  --color-brand-magenta: #E6007E;
+  --color-brand-magenta-dark: #B80063;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
