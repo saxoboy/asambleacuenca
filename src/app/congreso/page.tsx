@@ -42,7 +42,7 @@ export default function CongresoPage() {
             <Music className="size-4" /> Impactante — Ministerio Celeste
           </span> */}
           <span className="inline-flex items-center gap-2 rounded-full bg-brand-magenta/10 px-4 py-2 font-medium text-brand-magenta-dark">
-            <MapPin className="size-4" /> Auditorio Colegio Ciudad de Cuenca, Av de los Cerezos y Av. Ordoñez Lasso, Cuenca, Ecuador
+            <MapPin className="size-4" /> Av de los Cerezos y Av. Ordoñez Lasso, Cuenca, Ecuador
           </span>
         </div>
       </section>
