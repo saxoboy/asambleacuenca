@@ -14,7 +14,7 @@ const asistenteVacio = (): Asistente => ({
 });
 
 const inputClass =
-  "w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none transition focus:border-brand-magenta focus:ring-2 focus:ring-brand-magenta/30 placeholder:text-muted-foreground/60";
+  "w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-brand-magenta focus:ring-2 focus:ring-brand-magenta/30 placeholder:text-slate-400";
 
 const labelClass = "mb-1.5 block text-sm font-medium text-brand-navy";
 
@@ -113,7 +113,7 @@ export default function InscripcionForm() {
         <h3 className="text-2xl font-bold text-brand-navy">
           ¡Inscripción recibida!
         </h3>
-        <p className="mt-2 text-muted-foreground">
+        <p className="mt-2 text-slate-500">
           Gracias por inscribir a tu grupo al congreso{" "}
           <strong>IMPACTANTE</strong>. Nos vemos el 7 y 8 de agosto.
         </p>
@@ -124,7 +124,7 @@ export default function InscripcionForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-8 rounded-2xl border border-brand-magenta/15 bg-white p-6 shadow-sm sm:p-8"
+      className="space-y-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-lg shadow-brand-navy/5 sm:p-8"
     >
       {/* Datos del grupo */}
       <fieldset className="space-y-4">
@@ -206,7 +206,7 @@ export default function InscripcionForm() {
           {asistentes.map((a, i) => (
             <div
               key={i}
-              className="grid grid-cols-1 gap-3 rounded-lg bg-muted/40 p-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end"
+              className="grid grid-cols-1 gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end"
             >
               <div>
                 <label className={labelClass}>Nombre</label>
@@ -248,7 +248,7 @@ export default function InscripcionForm() {
           type="button"
           variant="outline"
           onClick={agregarAsistente}
-          className="border-brand-magenta/40 text-brand-magenta hover:bg-brand-magenta/10 hover:text-brand-magenta-dark"
+          className="border-brand-magenta/40 bg-white text-brand-magenta hover:bg-brand-magenta/10 hover:text-brand-magenta-dark"
         >
           <Plus className="size-4" /> Añadir asistente
         </Button>
@@ -271,7 +271,7 @@ export default function InscripcionForm() {
             onChange={(e) => setEspecialUrl(e.target.value)}
             placeholder="Enlace de Google Drive, WeTransfer, YouTube…"
           />
-          <p className="mt-1 text-xs text-muted-foreground">
+          <p className="mt-1 text-xs text-slate-500">
             Sube tu archivo a Google Drive o WeTransfer y pega aquí el enlace
             para compartir.
           </p>
@@ -291,14 +291,14 @@ export default function InscripcionForm() {
 
       {/* Consentimiento */}
       <fieldset>
-        <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-border bg-muted/30 p-4">
+        <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
           <input
             type="checkbox"
             checked={consentimiento}
             onChange={(e) => setConsentimiento(e.target.checked)}
             className="mt-1 size-5 shrink-0 accent-brand-magenta"
           />
-          <span className="text-xs leading-relaxed text-muted-foreground">
+          <span className="text-xs leading-relaxed text-slate-500">
             {CONSENTIMIENTO_TEXTO}
           </span>
         </label>
